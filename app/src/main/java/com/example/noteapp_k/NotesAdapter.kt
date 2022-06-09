@@ -2,11 +2,13 @@ package com.example.noteapp_k
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp_k.databinding.ItemNotesBinding
 import com.example.noteapp_k.model.Note
+import com.example.noteapp_k.ui.fragments.HomeFragmentDirections
 
-class NotesAdapter(private var notesList:List<Note>):RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
+class NotesAdapter(private var notesList:List<Note>, var onClick:(Note) -> Unit ={}):RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
     class NotesHolder(val itemNotesBinding: ItemNotesBinding):RecyclerView.ViewHolder(itemNotesBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
@@ -17,6 +19,11 @@ class NotesAdapter(private var notesList:List<Note>):RecyclerView.Adapter<NotesA
 
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
         val data = notesList[position]
+        holder.itemNotesBinding.root.setOnClickListener {
+            //onClick(data)
+            val action = HomeFragmentDirections.actionHomeFragmentToEditNotesFragment(data)
+            Navigation.findNavController(it).navigate(action)
+        }
         holder.itemNotesBinding.notesTitle.text = data.title
         holder.itemNotesBinding.notessubTitle.text = data.subTitle
         holder.itemNotesBinding.notesDate.text = data.date

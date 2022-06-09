@@ -20,8 +20,11 @@
         <entry key="..\:/Users/2u/AndroidStudioProjects/NoteAppK/app/src/main/res/layout/item_notes.xml" value="0.25" />
         <entry key="..\:/Users/2u/AndroidStudioProjects/NoteAppK/app/src/main/res/layout/s.xml" value="0.1078125" />
         <entry key="..\:/Users/2u/AndroidStudioProjects/NoteAppK/app/src/release/res/layout/s.xml" value="0.1078125" />
+        <entry key="..\:/Users/2u/Desktop/NoteAppK/app/src/main/res/layout/fragment_create_notes.xml" value="0.1762917933130699" />
+        <entry key="..\:/Users/2u/Desktop/NoteAppK/app/src/main/res/layout/fragment_edit_notes.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/2u/Desktop/NoteAppK/app/src/main/res/layout/fragment_home.xml" value="0.10740740740740741" />
-        <entry key="..\:/Users/2u/Desktop/NoteAppK/app/src/main/res/layout/item_notes.xml" value="0.10740740740740741" />
+        <entry key="..\:/Users/2u/Desktop/NoteAppK/app/src/main/res/layout/item_notes.xml" value="0.264" />
+        <entry key="..\:/Users/2u/Desktop/NoteAppK/app/src/main/res/menu/item_detail_action_bar.xml" value="0.10740740740740741" />
       </map>
     </option>
   </component>

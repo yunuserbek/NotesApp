@@ -9,10 +9,10 @@ interface NotesDao {
     suspend fun insert(notes:Note)
 
     @Update
-    suspend fun updateNotes(note :Note)
+    suspend fun update(note: Note)
 
     @Delete
-    suspend  fun  delete(note: Note)
+    suspend fun delete(note: Note)
 
     @Query("SELECT * FROM notesTable order by id ASC")
      fun getAllNotes(): LiveData<List<Note>>

@@ -16,6 +16,7 @@
         <action
             android:id="@+id/action_homeFragment_to_editNotesFragment"
             app:destination="@id/editNotesFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/createNotesFragment"
@@ -34,5 +35,8 @@
         <action
             android:id="@+id/action_editNotesFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="old"
+            app:argType="com.example.noteapp_k.model.Note" />
     </fragment>
 </navigation>
