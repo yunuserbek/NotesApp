@@ -1,15 +1,12 @@
 package com.example.noteapp_k.ui.fragments
 
-import android.icu.text.CaseMap
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.noteapp_k.NoteApplication
 import com.example.noteapp_k.NoteViewModel
@@ -31,6 +28,7 @@ class EditNotesFragment : Fragment() {
     }
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,8 +40,57 @@ class EditNotesFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ArgsBeforeSelected()
+        PrioritysetOnClickListener()
+        val argsdata = Note(
+            id = args.old.id,
+            title = args.old.title,
+            subTitle = args.old.subTitle,
+            notes = args.old.notes,
+            date = args.old.date, priority = args.old.priority
+        )
+
+
+
+
+
+
+        binding.edtdoneNotesBtn.setOnClickListener {
+            val title = binding.edtnotesTitle.text.toString()
+            val subTitle = binding.edtnotesSubtitle.text.toString()
+            val notes = binding.edtnotesData.text.toString()
+            val d = Date()
+            val date: CharSequence = DateFormat.format("MMMM d, yyyy ", d.time)
+            val data = Note(
+                id = args.old.id,
+                title = title,
+                subTitle = subTitle,
+                notes = notes,
+                date = date.toString(), priority = priority
+            )
+            viewModel.update(data)
+            Toast.makeText(requireContext(), "updated", Toast.LENGTH_LONG).show()
+
+            Navigation.findNavController(it!!)
+                .navigate(R.id.action_editNotesFragment_to_homeFragment)
+
+        }
+        binding.deletebtn.setOnClickListener {
+            viewModel.deleteNote(argsdata)
+            Navigation.findNavController(it!!)
+                .navigate(R.id.action_editNotesFragment_to_homeFragment)
+            Toast.makeText(requireContext(), "Delete", Toast.LENGTH_LONG).show()
+        }
+
+
+    }
+
+
+
+    fun ArgsBeforeSelected() {
         binding.edtnotesData.setText(args.old.notes)
         binding.edtnotesSubtitle.setText(args.old.subTitle)
         binding.edtnotesTitle.setText(args.old.title)
@@ -68,6 +115,9 @@ class EditNotesFragment : Fragment() {
                 binding.redPriority.setImageResource(R.drawable.ic_baseline_done_24)
             }
         }
+    }
+
+    fun PrioritysetOnClickListener() {
         binding.greenPriority.setOnClickListener {
             priority = "1"
             binding.greenPriority.setImageResource(R.drawable.ic_baseline_done_24)
@@ -88,30 +138,7 @@ class EditNotesFragment : Fragment() {
             binding.redPriority.setImageResource(R.drawable.ic_baseline_done_24)
 
         }
-        binding.edtdoneNotesBtn.setOnClickListener {
-            updateNotes(it)
-        }
     }
-
-
-
-    private fun updateNotes(it: View?) {
-
-        val title = binding.edtnotesTitle.text.toString()
-        val subTitle = binding.edtnotesSubtitle.text.toString()
-        val notes = binding.edtnotesData.text.toString()
-        val d = Date()
-        val date: CharSequence = DateFormat.format("MMMM d, yyyy ", d.time)
-        val data = Note(
-            id=args.old.id,
-            title = title,
-            subTitle = subTitle,
-            notes = notes,
-            date = date.toString(), priority = priority)
-        viewModel.update(data)
-        Toast.makeText(requireContext(), "updated", Toast.LENGTH_LONG).show()
-        Log.e("@@@",    "updateNotes$title :$subTitle,$notes")
-        Navigation.findNavController(it!!).navigate(R.id.action_editNotesFragment_to_homeFragment)    }
 
 }
 
