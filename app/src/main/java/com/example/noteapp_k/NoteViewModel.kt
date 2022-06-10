@@ -14,7 +14,9 @@ class NoteViewModel(private val noteDao: NotesDao) : ViewModel() {
 
     val allNotes: LiveData<List<Note>> = noteDao.getAllNotes()
 
-
+    val getHighNotes:LiveData<List<Note>> = noteDao.getHighNotes()
+    val getMediumNotes:LiveData<List<Note>> = noteDao.getMediumNotes()
+    val getLowNotes:LiveData<List<Note>> = noteDao.getLowNotes()
     fun deleteNote(note: Note) {
         viewModelScope.launch {
             noteDao.delete(note)
@@ -29,6 +31,7 @@ class NoteViewModel(private val noteDao: NotesDao) : ViewModel() {
         viewModelScope.launch {
             noteDao.insert(note)
         }
+
     }
 
 

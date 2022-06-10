@@ -11,6 +11,7 @@ import com.example.noteapp_k.ui.fragments.HomeFragmentDirections
 class NotesAdapter(private var notesList:List<Note>, var onClick:(Note) -> Unit ={}):RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
     class NotesHolder(val itemNotesBinding: ItemNotesBinding):RecyclerView.ViewHolder(itemNotesBinding.root)
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
         val itemCardBinding = ItemNotesBinding.inflate(layoutInflater,parent,false)

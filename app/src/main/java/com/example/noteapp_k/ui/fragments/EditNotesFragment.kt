@@ -3,6 +3,7 @@ package com.example.noteapp_k.ui.fragments
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,7 @@ import com.example.noteapp_k.NoteViewModel
 import com.example.noteapp_k.R
 import com.example.noteapp_k.databinding.FragmentEditNotesBinding
 import com.example.noteapp_k.model.Note
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.*
 
 
@@ -23,11 +25,9 @@ class EditNotesFragment : Fragment() {
     var priority = "1"
 
 
-
     private val viewModel: NoteViewModel by activityViewModels {
         NoteViewModel.NoteViewModelFactory((activity?.application as NoteApplication).database.noteDao())
     }
-
 
 
     override fun onCreateView(
@@ -75,10 +75,25 @@ class EditNotesFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete -> {
-                viewModel.deleteNote(Note(args.old.id,args.old.title,args.old.subTitle,args.old.notes,args.old.date,args.old.priority))
-                findNavController().navigateUp()
+                val bottomSheet: BottomSheetDialog =
+                    BottomSheetDialog(requireContext(), R.style.BottomSheetStyle)
+                bottomSheet.setContentView(R.layout.dialog_delete)
+                val texViewYes = bottomSheet.findViewById<TextView>(R.id.yes_dialog)
+                val textViewNo = bottomSheet.findViewById<TextView>(R.id.no_dialog)
+
+                texViewYes?.setOnClickListener {
+                    viewModel.deleteNote(Note(args.old.id,args.old.title,args.old.subTitle,args.old.notes,args.old.date,args.old.priority))
+                    findNavController().navigateUp()
+                    bottomSheet.dismiss()
+                }
+                textViewNo?.setOnClickListener {
+                    bottomSheet.dismiss()
+                }
+                bottomSheet.show()
+
                 true
             }
+
             // NavigateUp
             else -> {
 
