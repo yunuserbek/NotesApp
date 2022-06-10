@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.noteapp_k.NoteApplication
 import com.example.noteapp_k.NoteViewModel
@@ -45,19 +46,6 @@ class EditNotesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         ArgsBeforeSelected()
         PrioritysetOnClickListener()
-        val argsdata = Note(
-            id = args.old.id,
-            title = args.old.title,
-            subTitle = args.old.subTitle,
-            notes = args.old.notes,
-            date = args.old.date, priority = args.old.priority
-        )
-
-
-
-
-
-
         binding.edtdoneNotesBtn.setOnClickListener {
             val title = binding.edtnotesTitle.text.toString()
             val subTitle = binding.edtnotesSubtitle.text.toString()
@@ -78,17 +66,26 @@ class EditNotesFragment : Fragment() {
                 .navigate(R.id.action_editNotesFragment_to_homeFragment)
 
         }
-        binding.deletebtn.setOnClickListener {
-            viewModel.deleteNote(argsdata)
-            Navigation.findNavController(it!!)
-                .navigate(R.id.action_editNotesFragment_to_homeFragment)
-            Toast.makeText(requireContext(), "Delete", Toast.LENGTH_LONG).show()
-        }
-
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.item_detail_action_bar, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete -> {
+                viewModel.deleteNote(Note(args.old.id,args.old.title,args.old.subTitle,args.old.notes,args.old.date,args.old.priority))
+                findNavController().navigateUp()
+                true
+            }
+            // NavigateUp
+            else -> {
+
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
 
     fun ArgsBeforeSelected() {
         binding.edtnotesData.setText(args.old.notes)
