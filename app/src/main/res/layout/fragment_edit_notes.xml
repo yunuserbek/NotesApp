@@ -120,6 +120,6 @@
         android:src="@drawable/ic_baseline_done_24"
         app:backgroundTint="@color/white" />
 
-
+    
 
 </RelativeLayout>

@@ -23,6 +23,8 @@ interface NotesDao {
     fun getMediumNotes(): LiveData<List<Note>>
     @Query("SELECT * FROM notesTable WHERE priority=3")
     fun getLowNotes(): LiveData<List<Note>>
+    @Query("SELECT * FROM notesTable WHERE title LIKE :search ORDER BY id DESC")
+    fun getByTitle(search: String?): List<Note>
 
 
 
