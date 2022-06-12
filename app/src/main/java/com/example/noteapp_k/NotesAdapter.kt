@@ -8,14 +8,11 @@ import com.example.noteapp_k.databinding.ItemNotesBinding
 import com.example.noteapp_k.model.Note
 import com.example.noteapp_k.ui.fragments.HomeFragmentDirections
 
-class NotesAdapter(var notelist:List<Note>):RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
+class NotesAdapter():RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
+                   //var notelist:List<Note>
     class NotesHolder(val itemNotesBinding: ItemNotesBinding):RecyclerView.ViewHolder(itemNotesBinding.root)
-    //private var oldData = emptyList<Note>()
-    fun filtering(newFilteredList: ArrayList<Note>) {
-        notelist =newFilteredList
-        notifyDataSetChanged()
+    private var oldData = emptyList<Note>()
 
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
@@ -24,8 +21,8 @@ class NotesAdapter(var notelist:List<Note>):RecyclerView.Adapter<NotesAdapter.No
     }
 
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
-        //val data = oldData[position]
-        val data = notelist[position]
+        val data = oldData[position]
+        //val data = notelist[position]
         holder.itemNotesBinding.root.setOnClickListener {
             //onClick(data)
             val action = HomeFragmentDirections.actionHomeFragmentToEditNotesFragment(data)
@@ -44,14 +41,20 @@ class NotesAdapter(var notelist:List<Note>):RecyclerView.Adapter<NotesAdapter.No
     }
 
     override fun getItemCount(): Int {
-        return notelist.size
+        return oldData.size
     }
-    /*
+
     fun setData(newData: List<Note>){
         oldData = newData
         notifyDataSetChanged()
     }
+    fun filtering(newFilteredList: List<Note>) {
+        oldData =newFilteredList
+        notifyDataSetChanged()
 
-     */
+    }
+
+
+
 
 }

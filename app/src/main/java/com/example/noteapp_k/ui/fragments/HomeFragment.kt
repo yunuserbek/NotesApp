@@ -1,11 +1,11 @@
 package com.example.noteapp_k.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.noteapp_k.NoteApplication
 import com.example.noteapp_k.NoteViewModel
@@ -19,10 +19,11 @@ class HomeFragment : Fragment() {
     private val viewModel: NoteViewModel by activityViewModels {
         NoteViewModel.NoteViewModelFactory((activity?.application as NoteApplication).database.noteDao())
     }
-    var oldMyNotes = arrayListOf<Note>()
+    var oldMyNotes = emptyList<Note>()
     private lateinit var binding: FragmentHomeBinding
-    lateinit var adapter: NotesAdapter
-    //private val adapter: NotesAdapter by lazy { NotesAdapter() }
+
+    //lateinit var adapter: NotesAdapter
+    private val adapter: NotesAdapter by lazy { NotesAdapter() }
 
 
     override fun onCreateView(
@@ -42,49 +43,48 @@ class HomeFragment : Fragment() {
 
         viewModel.allNotes.observe(viewLifecycleOwner) {
             binding.notesRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = NotesAdapter(it)
-            // adapter.setData(it)
+            //adapter = NotesAdapter(it)
+            adapter.setData(it)
             binding.notesRecycler.adapter = adapter
-            oldMyNotes = it as ArrayList<Note>
+            oldMyNotes = it
 
         }
         binding.filterAll.setOnClickListener {
             viewModel.allNotes.observe(viewLifecycleOwner) {
                 binding.notesRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
-                adapter = NotesAdapter(it)
-                // adapter.setData(it)
+                //adapter = NotesAdapter(it)
+                adapter.setData(it)
                 binding.notesRecycler.adapter = adapter
-                oldMyNotes = it as ArrayList<Note>
+                oldMyNotes = it
 
             }
             binding.filterhigh.setOnClickListener {
                 viewModel.getHighNotes.observe(viewLifecycleOwner) {
                     binding.notesRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
-                    // adapter.setData(it)
-                    adapter = NotesAdapter(it)
+                    adapter.setData(it)
+                    //adapter = NotesAdapter(it)
                     binding.notesRecycler.adapter = adapter
-                    oldMyNotes = it as ArrayList<Note>
+                    oldMyNotes = it
                 }
                 binding.filtermedium.setOnClickListener {
                     viewModel.getMediumNotes.observe(viewLifecycleOwner) {
                         binding.notesRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
-
-                        //adapter.setData(it)
-                        adapter = NotesAdapter(it)
+                        adapter.setData(it)
+                        // adapter = NotesAdapter(it)
                         binding.notesRecycler.adapter = adapter
 
-                        oldMyNotes = it as ArrayList<Note>
+                        oldMyNotes = it
                     }
                 }
                 binding.filterlow.setOnClickListener {
                     viewModel.getLowNotes.observe(viewLifecycleOwner) {
                         binding.notesRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
-                        //adapter.setData(it)
-                        adapter = NotesAdapter(it)
+                        adapter.setData(it)
+                        //adapter = NotesAdapter(it)
                         binding.notesRecycler.adapter = adapter
-                        oldMyNotes = it as ArrayList<Note>
+                        oldMyNotes = it
 
                     }
                 }
@@ -94,21 +94,37 @@ class HomeFragment : Fragment() {
 
         }
 
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                notesFilter(p0)
+                return true
+            }
+
+        })
 
     }
-
+/*
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
+
         val item = menu.findItem(R.id.app_bar_search)
+
+
         val searchView = item.actionView as SearchView
         searchView.queryHint = "enter notes"
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
-                notesFilteting(p0)
+                notesFilter(p0)
                 return true
             }
 
@@ -116,23 +132,20 @@ class HomeFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun notesFilteting(p0: String?) {
-        Log.e("@@@", "notesFilteting: $p0")
+ */
+
+
+    private fun notesFilter(p0: String?) {
+
         val newFilteredList = arrayListOf<Note>()
-        for (i in oldMyNotes){
-            if(i.title.contains(p0!!)||i.subTitle.contains(p0!!)){
+        for (i in oldMyNotes) {
+            if (i.title.contains(p0!!) || i.subTitle.contains(p0!!)) {
                 newFilteredList.add(i)
             }
         }
         adapter.filtering(newFilteredList)
 
     }
-
-
-/*
-
-
-
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -144,14 +157,9 @@ class HomeFragment : Fragment() {
 
             R.id.add_item -> {
                 findNavController().navigate(R.id.action_homeFragment_to_createNotesFragment)
-                Toast.makeText(requireContext(),"merhaba",Toast.LENGTH_LONG).show()
-            }
-            R.id.app_bar_search->{
-                Toast.makeText(requireContext(),"merhaba",Toast.LENGTH_LONG).show()
 
             }
 
-            // NavigateUp
 
             else -> {
                 return super.onOptionsItemSelected(item)
@@ -163,12 +171,6 @@ class HomeFragment : Fragment() {
         return true
     }
 
-
-
-
-
-
- */
 
 }
 
