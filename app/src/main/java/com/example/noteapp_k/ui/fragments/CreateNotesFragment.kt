@@ -72,7 +72,7 @@ class CreateNotesFragment : Fragment() {
         val subTitle = binding.notesSubtitle.text.toString()
         val notes = binding.notesData.text.toString()
         val d = Date()
-        val date: CharSequence = DateFormat.format("MMMM d, yyyy ", d.time)
+        val date: CharSequence = DateFormat.format("d MMMM yyyy ", d.time)
         println(date)
         val data = Note(
             title = title,
