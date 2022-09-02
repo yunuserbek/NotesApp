@@ -15,27 +15,26 @@ import com.example.noteapp_k.NoteViewModel
 import com.example.noteapp_k.R
 import com.example.noteapp_k.databinding.FragmentCreateNotesBinding
 import com.example.noteapp_k.model.Note
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import java.util.*
 
-class CreateNotesFragment : Fragment() {
+class CreateNotesFragment : BottomSheetDialogFragment() {
 
 
-    lateinit var binding: FragmentCreateNotesBinding
+    //lateinit var binding: FragmentCreateNotesBinding
+    private val binding by viewBinding(FragmentCreateNotesBinding::bind)
     private val viewModel: NoteViewModel by activityViewModels {
         NoteViewModel.NoteViewModelFactory((activity?.application as NoteApplication).database.noteDao())
     }
     var priority: String = "1"
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentCreateNotesBinding.inflate(layoutInflater)
-
-        return binding.root
+    return inflater.inflate(R.layout.fragment_create_notes,container,false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
